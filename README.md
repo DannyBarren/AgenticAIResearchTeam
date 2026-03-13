@@ -16,7 +16,7 @@ This is my actual daily driver. I use it for every new consulting gig.
 
 I built a **Flask web UI** so you don’t even have to touch the terminal if you don’t want to. Drag and drop files, type your goal, watch live progress, then download the reports.
 
-![Interface](AgenticAIResearchTeam/screenshots/.png)
+![Interface](AgenticAIResearchTeam/screenshots/Untitled.png)
 
 
 ### Who This Is Actually For
