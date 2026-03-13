@@ -1,111 +1,67 @@
-<!-- Copyright Daniel Lee Barren 2026 -->
+# AgenticAI Research Team – Your Personal AI Consulting Crew
 
-✅ All ChromaDB issues fixed — now 100% local in ./chroma_db. Global cache auto-deleted on every run.
+I built this because I got tired of doing the same 6-hour research + competitor analysis + architecture write-up for every client.  
 
-## Generic Consultant Crew – Market Research + Consulting Template
+Now I drop a folder of docs, type what I need, hit one button, and get back a full consulting-grade deliverable in minutes — market research, competitor matrix, solution design, pricing strategy, and a client-ready package. All of it based **only** on the files I give it.
 
-This project is a reusable CrewAI setup for solo consultants in any industry
-({industry}, {client_type}). It performs market research, competitor analysis,
-solution/architecture design, and note capture using only documents in the
-`./docs` folder as context.
+This is my actual daily driver. I use it for every new consulting gig.
 
-The crew performs:
+### What It Actually Does
+- Reads every file in your `./docs` folder (app descriptions, notes, requirements, exports, whatever) and treats it as the single source of truth.
+- Researches the real market for whatever industry and client type you set.
+- Finds actual competitors, builds a comparison table, and shows exactly where you can win.
+- Designs a real solution architecture (especially strong for SaaS/web apps — it even writes code suggestions).
+- Gives you 2–3 solid business model + pricing options with trade-offs.
+- Packages everything into clean markdown reports + a beautiful PDF you can email to clients the same day.
 
-- **Docs summarization** – reads and summarizes all files in `./docs` to
-  understand the client's current situation and requirements.
-- **Market research** for the specified `industry` and `client_type`.
-- **Competitor analysis** of relevant products, services, or platforms.
-- **Solution / architecture design** based on the client's materials and goals.
-- **Human approval gates** before major decision points and before generating
-  the final client package.
-- **Notes capture and packaging** into a client-ready deliverable under `output/`.
+And yes — there’s a **Flask web UI** so you don’t even have to touch the terminal if you don’t want to. Drag and drop files, type your goal, watch live progress, then download the reports.
 
-The team also includes a dedicated Code Writer / Technical Architect agent and a
-Business Model & Pricing Strategist to support deeper technical and commercial
-work when needed.
-One-click beautiful PDF reports are included — professional enough to send
-directly to clients.
+### Who This Is Actually For
+- Solo consultants like me who want to look like a 5-person team
+- Founders doing their own product research or go-to-market sprints
+- Small agencies that need to crank out high-quality deliverables fast
+- Anyone who has a pile of client docs and needs structured output instead of staring at a blank page
 
-### Security and cost control (invisible until triggered)
+### How to Use It (The Way I Actually Use It)
 
-- **Rate limits**: max 15 Serper/search calls and 30 OpenAI LLM calls per run.
-- **Cost guardrail**: run stops and asks for human approval if estimated cost exceeds $2.00.
-- **Max runtime**: 25 minutes per crew run.
-- **Logging**: every tool call and LLM use is recorded in `logs/security_log_YYYYMMDD.txt`.
-- No automatic external actions (emails, payments, posts) without human confirmation.
+1. Drop your client stuff in the `docs/` folder  
+   (I usually put `app_description.md`, meeting notes, old requirements, screenshots as text, etc.)
 
-### Installation
+2. Open the web UI (easiest way):
+   ```bash
+   cd web_ui
+   python app.py
+   ```
+   Then go to http://localhost:8000
 
-- Ensure you have Python >=3.10 <3.14 available.
-- Install dependencies (you can use `pip` or `uv`):
+3. Drag and drop files → type what you want the crew to focus on → hit **Run Agent Team**
 
+4. Watch it work in real time, then download:
+   - The full markdown package
+   - A clean professional PDF ready to send to the client
+
+Or if you prefer the terminal:
 ```bash
-pip install -r requirements.txt
+crewai run
 ```
 
-- Set your LLM and API keys in `.env` (e.g. `OPENAI_API_KEY`, `MODEL=openai/gpt-4o-mini`, and optional `SERPER_API_KEY` for web search).
+### Built-in Guardrails (Because I Hate Surprise Bills)
+- Max 30 OpenAI calls per run
+- Max $2 estimated cost before it pauses for approval
+- 25-minute runtime cap
+- Full logging so nothing goes off the rails
+- Human approval gates before it writes final deliverables
 
-### How to Use for Any Client
+### Tech Stuff (for the nerds)
+- CrewAI + gpt-4o-mini (cheap & fast)
+- Local ChromaDB (no cloud vector DB nonsense)
+- WeasyPrint for beautiful PDFs
+- Flask web UI with live progress streaming
 
-- **Set industry and client_type**
-  - Option 1 (environment variables):
-    - `GENERIC_CONSULTANT_INDUSTRY="Roofing"`, `GENERIC_CONSULTANT_CLIENT_TYPE="SaaS startup"`
-    - Or any other combination such as HVAC, plumbing, landscaping, SaaS, etc.
-  - Option 2 (edit defaults):
-    - Open `src/generic_consultant_crew/main.py` and update the `INDUSTRY` and
-      `CLIENT_TYPE` defaults near the top of the file.
+I literally use this thing multiple times a week. It’s not some demo — it’s the tool that lets me run my one-man consulting business at a way higher level.
 
-- **Provide client materials**
-  - Drop all client documents, notes, PDFs, requirements, and background
-    materials into the `./docs` folder. The crew will use ONLY this folder for
-    context.
-  - Common files: `docs/app_description.md`, `docs/requirements.txt`,
-    `docs/background_notes.md`, exported emails or reports as `.md` or `.txt`.
+Want to try it? Clone the repo, throw some docs in the `docs/` folder, and hit run. You’ll see why I’m so hyped about it.
 
-- **Run for a new client**
-  - From the project root:
-    ```bash
-    crewai run
-    ```
-  - Or using the script entry point (after install):
-    ```bash
-    generic_consultant_crew
-    ```
-  - The run will:
-    - Ensure `docs/` and `logs/` exist.
-    - Reset security state and start the security listener.
-    - Summarize all docs in `./docs`.
-    - Execute the consulting workflow with approval gates and rate/cost limits.
-    - Write results to `output/` (`reference_docs_summary.md`,
-      `market_research.md`, `competitor_analysis.md`,
-      `solution_architecture.md`, `client_package.md`, and timestamped
-      `notes_*.txt`).
+Questions or want me to add something? Open an issue — happy to help other solo operators level up.
 
-### Providing Your Real App or Business Documentation
-
-- Place your internal app or business documents as `.md` or `.txt` files in the
-  **`docs/`** folder.
-- At minimum, replace `docs/app_description.md` with your client's internal app
-  or business description. The crew will use whatever is here (plus any other
-  files in `./docs`) as its only context.
-
-### Running the Flask Web UI
-
-- Install additional web UI dependencies:
-  ```bash
-  pip install -r web_ui/requirements.txt
-  ```
-
-- Start the web interface (this is also the default script entry point):
-  ```bash
-  generic_consultant_crew
-  ```
-
-- Then open `http://localhost:8000` in your browser. From there you can:
-  - Describe your consulting project or research goal in a large textarea.
-  - Drag and drop client documents; they are saved into `./docs` automatically.
-  - Click **Run Agent Team** to launch the full consulting crew.
-  - Watch live status updates as the crew progresses.
-  - Download individual markdown outputs from the output panel.
-  - Click **Download Full Report as PDF** to render `client_package.md` as a
-    PDF via WeasyPrint.
+— Danny
