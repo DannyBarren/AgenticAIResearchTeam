@@ -54,20 +54,20 @@ Or if you prefer the terminal:
 crewai run
 ```
 
-### Built-in Guardrails (Because I Hate Surprise Bills)
+### Built-in Guardrails:
 - Max 30 OpenAI calls per run
 - Max $2 estimated cost before it pauses for approval
 - 25-minute runtime cap
 - Full logging so nothing goes off the rails
 - Human approval gates before it writes final deliverables
 
-### Tech Stuff (for the nerds)
+### Tech Stack:
 - CrewAI + gpt-4o-mini (cheap & fast)
 - Local ChromaDB (no cloud vector DB nonsense)
 - WeasyPrint for beautiful PDFs
 - Flask web UI with live progress streaming
 
-I literally use this thing multiple times a week. It’s not some demo — it’s the tool that lets people run a one-man consulting business at a higher level.
+It’s the tool that lets people run a one-man consulting business at a higher level.
 
 Want to try it? Clone the repo, throw some docs in the `docs/` folder, and hit run.
 
