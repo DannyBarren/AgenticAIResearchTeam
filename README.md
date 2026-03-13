@@ -18,11 +18,11 @@ I built a **Flask web UI** so you don’t even have to touch the terminal if you
 
 ![Interface](screenshots/Untitled.png)
 
-![interface](screenshots/__.png)
+![interface](screenshots/___.png)
 
-![interface2](screenshots/pic2.png)
+![interface2](screenshots/pic3.png)
 
-![interface3](screenshots/pic_.png)
+![interface3](screenshots/pic__.png)
 
 
 ### Who This Is Actually For
