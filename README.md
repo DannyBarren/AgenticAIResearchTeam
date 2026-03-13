@@ -14,7 +14,10 @@ This is my actual daily driver. I use it for every new consulting gig.
 - Gives you 2–3 solid business model + pricing options with trade-offs.
 - Packages everything into clean markdown reports + a beautiful PDF you can email to clients the same day.
 
-And yes — there’s a **Flask web UI** so you don’t even have to touch the terminal if you don’t want to. Drag and drop files, type your goal, watch live progress, then download the reports.
+I built a **Flask web UI** so you don’t even have to touch the terminal if you don’t want to. Drag and drop files, type your goal, watch live progress, then download the reports.
+
+![Interface](AgenticAIResearchTeam/screenshots/.png)
+
 
 ### Who This Is Actually For
 - Solo consultants like me who want to look like a 5-person team
@@ -58,10 +61,10 @@ crewai run
 - WeasyPrint for beautiful PDFs
 - Flask web UI with live progress streaming
 
-I literally use this thing multiple times a week. It’s not some demo — it’s the tool that lets me run my one-man consulting business at a way higher level.
+I literally use this thing multiple times a week. It’s not some demo — it’s the tool that lets people run a one-man consulting business at a higher level.
 
-Want to try it? Clone the repo, throw some docs in the `docs/` folder, and hit run. You’ll see why I’m so hyped about it.
+Want to try it? Clone the repo, throw some docs in the `docs/` folder, and hit run.
 
-Questions or want me to add something? Open an issue — happy to help other solo operators level up.
+Questions or want me to add something? Open an issue.
 
 — Danny
