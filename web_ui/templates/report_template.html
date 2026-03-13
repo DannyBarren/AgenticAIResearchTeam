@@ -1,0 +1,192 @@
+<!doctype html>
+<!-- Copyright Daniel Lee Barren 2026 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Barren Consulting, LLC - AI Consulting Report</title>
+    <style>
+      @page {
+        margin: 2.5cm 2cm;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        color: #0f172a;
+        line-height: 1.6;
+        font-size: 11pt;
+      }
+
+      .page {
+        width: 100%;
+      }
+
+      header {
+        border-bottom: 2px solid #1d4ed8;
+        padding-bottom: 12px;
+        margin-bottom: 18px;
+      }
+
+      .title {
+        font-size: 22pt;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+      }
+
+      .subtitle {
+        font-size: 11pt;
+        color: #4b5563;
+        margin-top: 4px;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #075985;
+        font-size: 9pt;
+        margin-top: 6px;
+      }
+
+      h2 {
+        font-size: 15pt;
+        margin-top: 20px;
+        margin-bottom: 6px;
+        color: #0f172a;
+        border-left: 4px solid #1d4ed8;
+        padding-left: 8px;
+      }
+
+      h3 {
+        font-size: 12pt;
+        margin-top: 14px;
+        margin-bottom: 4px;
+        color: #111827;
+      }
+
+      .section-icon {
+        font-size: 13pt;
+        margin-right: 6px;
+      }
+
+      p {
+        margin: 4px 0 8px 0;
+      }
+
+      ul {
+        margin: 4px 0 8px 18px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0 14px 0;
+        font-size: 10pt;
+      }
+
+      th,
+      td {
+        border: 1px solid #d1d5db;
+        padding: 6px 8px;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eff6ff;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      tbody tr:nth-child(even) {
+        background: #f9fafb;
+      }
+
+      .chip-row {
+        margin-top: 4px;
+      }
+
+      .chip {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        color: #111827;
+        font-size: 8pt;
+        margin-right: 4px;
+        margin-bottom: 2px;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 6px;
+        font-size: 8pt;
+        color: #6b7280;
+        text-align: center;
+      }
+
+      .footer-brand {
+        font-weight: 600;
+        color: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <h1 class="title">AI Consulting Report</h1>
+        <p class="subtitle">
+          Engagement summary for {{ company_name }} – {{ industry }} / {{ client_type }}
+        </p>
+        <div class="pill">Generated on {{ generated_date }}</div>
+      </header>
+
+      <section>
+        <h2><span class="section-icon">📌</span>Executive Summary</h2>
+        {{ executive_summary | safe }}
+      </section>
+
+      <section>
+        <h2><span class="section-icon">📊</span>Market Research</h2>
+        {{ market_research | safe }}
+      </section>
+
+      <section>
+        <h2><span class="section-icon">🏁</span>Competitor Landscape</h2>
+        {{ competitor_overview | safe }}
+
+        {% if competitor_table %}
+        <h3>Competitor Matrix</h3>
+        {{ competitor_table | safe }}
+        {% endif %}
+      </section>
+
+      <section>
+        <h2><span class="section-icon">🧩</span>Solution & Architecture</h2>
+        {{ solution_architecture | safe }}
+      </section>
+
+      <section>
+        <h2><span class="section-icon">💸</span>Business Model & Pricing</h2>
+        {{ business_model_pricing | safe }}
+      </section>
+
+      <section>
+        <h2><span class="section-icon">📝</span>Consulting Notes & Next Steps</h2>
+        {{ notes_and_next_steps | safe }}
+      </section>
+    </div>
+
+    <footer>
+      Generated on {{ generated_date }} · <span class="footer-brand"
+        > Copyright Daniel Lee Barren, 2026</span
+      >
+    </footer>
+  </body>
+  </html>
+

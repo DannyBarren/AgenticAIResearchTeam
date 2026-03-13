@@ -1,0 +1,195 @@
+load_reference_docs:
+  description: >
+    Read and summarize all files in the ./docs folder to understand the client's
+    current situation and requirements. All client notes, requirements, and
+    reference materials are provided in the ./docs folder.
+    Client engagement focus: {engagement_focus}
+  expected_output: >
+    A concise but complete summary of the existing environment, including:
+    - Core entities (such as customers, users, work items, assets, or data objects)
+    - Key workflows and processes
+    - How information and files are stored and organized
+    - Any limitations or pain points mentioned in the docs.
+  agent: project_manager
+
+market_research:
+  description: >
+    Client request and scope: {engagement_focus}
+    Using the synthesized reference docs and external research, analyze the
+    broader market relevant to the client's {industry} and {client_type}.
+    Focus on how similar tools or services position themselves, common pricing
+    bands, and what differentiators matter most today. Address every aspect
+    the client asked for (e.g. specific product categories, use cases,
+    pricing, popularity) with concrete findings and named examples where
+    possible.
+  expected_output: >
+    A professional market research brief tailored to the client, including:
+    - Ideal customer profiles (ICPs) by company size or segment
+    - Market segments and trends affecting the client
+    - Typical feature or service sets in this space
+    - Pricing and packaging norms
+    - Risks and opportunities for the client based on current conditions.
+  agent: market_researcher
+
+competitor_analysis:
+  description: >
+    Client request and scope: {engagement_focus}
+    Perform a deep competitor analysis of leading products, services, or
+    platforms in the client's {industry} and for their {client_type}. Use
+    websites, public docs, and any available demos to infer capabilities and
+    positioning. Identify real, named competitors (actual product and company
+    names)—not generic placeholders. Cover capabilities, how they are used,
+    popularity, pricing, weaknesses, and pain points or unfilled needs as
+    requested by the client.
+  expected_output: >
+    A detailed competitor matrix and narrative analysis that covers:
+    - At least 5 named competitors (real company and product names) with
+      brief descriptions
+    - Feature or capability comparison table vs. the client's envisioned
+      solution
+    - Strengths and weaknesses for each competitor
+    - Gaps in the market where the client can stand out
+    - Recommendations on differentiation and go-to-market messaging.
+  agent: competitor_analyst
+
+approve_before_solution_design:
+  description: >
+    Approval gate: the crew may proceed to design the technical or operational
+    solution architecture. In headless or web UI mode, assume approval and
+    proceed. The Project Manager will then delegate work to the appropriate
+    specialists.
+  expected_output: >
+    Proceeding with solution architecture design work.
+  agent: project_manager
+  human_input: false
+
+solution_architecture_design:
+  description: >
+    Client context: {engagement_focus}
+    Design a practical, production-ready solution architecture for the client
+    based on the reference docs, market research, and competitor analysis.
+    This may be a software system, service blueprint, or hybrid solution.
+    When a web or SaaS application is appropriate, you may assume a modern
+    stack such as a Python + Flask backend plus a modern frontend, but adapt
+    to the context in the docs. Use the code interpreter only in the safe
+    sandbox; do not write code to disk without prior human approval (this task
+    runs after approval).
+  expected_output: >
+    A technical or solution architecture document that includes:
+    - Proposed components/modules and how they interact
+    - Key data models or entities
+    - Interfaces, APIs, or process touchpoints
+    - Security and compliance considerations
+    - How this architecture aligns with the client's goals and constraints.
+  agent: solution_architect
+
+business_model_and_pricing:
+  description: >
+    Client context: {engagement_focus}
+    Using the reference docs, market research, and competitor analysis, propose
+    clear business model options and pricing strategies for the client's offer
+    in the {industry} industry and for their {client_type}. Focus on practical
+    options that balance revenue potential, simplicity, and market norms.
+  expected_output: >
+    A concise business model and pricing strategy brief that includes:
+    - 2–3 viable business model options (e.g., subscription, usage-based,
+      hybrid) with pros and cons
+    - Recommended pricing ranges or tiers, with rationale
+    - Commentary on positioning, discounting, and contract structure where
+      relevant.
+  agent: business_model_pricing_strategist
+
+code_writer_technical_implementation:
+  description: >
+    When explicitly requested by the human consultant, translate the agreed
+    solution architecture into concrete technical scaffolding (Python, Flask,
+    APIs, data models, or Docker configuration). Use the code interpreter as a
+    safe sandbox to validate snippets, and record key design decisions and code
+    locations using the save_to_notes tool and, when appropriate, write code
+    artifacts under ./generated_code/.
+  expected_output: >
+    A short technical implementation note describing what code was generated,
+    where it was saved (under ./generated_code/), and how it maps back to the
+    overall architecture. Include any important trade-offs or TODOs for the
+    human engineer.
+  agent: code_writer_technical_architect
+
+generate_html_report:
+  description: >
+    Engagement scope: {engagement_focus}
+    Consolidate the engagement outputs (reference docs summary, market research,
+    competitor analysis, solution architecture, business model and pricing, and
+    important consulting notes) into a single, professional HTML report. Use
+    real competitor names, pricing, and findings—no generic placeholders.
+    Follow the structure implied by the HTML template used for PDF generation:
+    - Executive summary
+    - Market analysis
+    - Competitor landscape and matrix
+    - Solution and architecture
+    - Business model and pricing
+    - Notes and next steps.
+  expected_output: >
+    A complete HTML document suitable for direct rendering to PDF, with clear
+    sections, headings, and tables where appropriate. The HTML will be written
+    to output/client_report.html and used by the web UI to generate a beautiful
+    PDF report.
+  agent: report_formatter_pdf_generator
+
+capture_consulting_notes:
+  description: >
+    Capture structured notes summarizing the key findings so far (reference
+    docs synthesis, market research, competitor analysis, and architecture
+    design) and persist them into a timestamped notes file under ./output
+    using the save_to_notes tool. The Note Taker uses today's date when
+    creating the file (e.g. output/notes_YYYYMMDD_HHMMSS.txt).
+  expected_output: >
+    A confirmation that a notes_{current_date}_*.txt file has been created in
+    ./output and contains clearly labeled sections for: Existing Context,
+    Market, Competitors, Solution/Architecture, Risks, Open Questions, and
+    Next Steps.
+  agent: note_taker
+
+approve_before_final_package:
+  description: >
+    Approval gate: the crew may generate the final client package and write
+    it to ./output. In headless or web UI mode, assume approval and proceed.
+  expected_output: >
+    Proceeding to generate the final client package.
+  agent: project_manager
+  human_input: false
+
+compile_client_package:
+  description: >
+    The client asked for: {engagement_focus}
+    Compile a professional client package assembling:
+    - A market research report
+    - A competitor analysis (with real competitor names and details)
+    - A solution or technical architecture overview
+    - References to the notes files created in ./output
+    Ensure the output is written to the ./output folder as markdown and is
+    client-ready for the specified {industry} and {client_type}. Include
+    concrete names, numbers, and findings—no generic placeholders.
+  expected_output: >
+    A polished, client-facing package in markdown format that a solo
+    consultant can hand off directly to the client. It should link to or
+    list:
+    - Market and competitor insights
+    - Recommended positioning and pricing approach (where applicable)
+    - Summary of the solution or architecture
+    - Pointers to the raw notes files for deeper details.
+  agent: project_manager
+  markdown: true
+
+human_review:
+  description: >
+    Summarize the compiled client package, key decisions, and assumptions.
+    Produce a short checklist of items to verify (market assumptions, named
+    competitors, pricing ranges, architecture scope, rollout phases) and any
+    suggested edits. In headless mode, output the checklist without waiting.
+  expected_output: >
+    A short checklist of items to verify (market assumptions, named
+    competitors, pricing ranges if present, architecture scope, and rollout
+    phases), plus any suggested edits to the final package.
+  agent: project_manager
+  human_input: false
+

@@ -1,0 +1,28 @@
+# Copyright Daniel Lee Barren 2026
+
+[project]
+name = "generic_consultant_crew"
+version = "0.1.0"
+description = "Generic Consultant Crew using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[tools,litellm]>=0.80.0",
+    "onnxruntime==1.17.3",  # pinned for Python 3.10 compatibility (1.24.3+ dropped 3.10 support)
+    "sentence-transformers",  # local embedder for WebsiteSearchTool (no OpenAI key)
+]
+
+[project.scripts]
+generic_consultant_crew = "web_ui.app:run"
+run_crew = "generic_consultant_crew.main:run"
+train = "generic_consultant_crew.main:train"
+replay = "generic_consultant_crew.main:replay"
+test = "generic_consultant_crew.main:test"
+run_with_trigger = "generic_consultant_crew.main:run_with_trigger"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"

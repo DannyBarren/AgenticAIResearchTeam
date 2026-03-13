@@ -1,0 +1,226 @@
+<!doctype html>
+<!-- Copyright Daniel Lee Barren 2026 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Barren Consulting, LLC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Tailwind via CDN for rapid, modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div class="min-h-screen flex">
+      <!-- Sidebar -->
+      <aside
+        class="w-72 border-r border-slate-800 bg-slate-950/80 backdrop-blur flex flex-col justify-between"
+      >
+        <div>
+          <div class="px-6 py-5 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-xl bg-cyan-400/10 flex items-center justify-center">
+                <span class="text-cyan-300 text-lg font-semibold">AI</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold tracking-tight">Barren Consulting, LLC</p>
+                <p class="text-xs text-slate-400">Premium agent team for market research & strategy</p>
+              </div>
+            </div>
+          </div>
+          <div class="px-6 py-4 space-y-3">
+            <div>
+              <p class="text-xs uppercase tracking-wide text-slate-500 mb-1.5">Current Engagement</p>
+              <p id="sidebar-engagement" class="text-sm text-slate-200 line-clamp-3">
+                Describe your consulting goal to begin.
+              </p>
+            </div>
+            <button
+              id="new-engagement"
+              class="inline-flex items-center gap-2 rounded-full bg-slate-800 hover:bg-slate-700 px-3 py-1.5 text-xs font-medium text-slate-100 transition-colors"
+            >
+              <span class="h-4 w-4 rounded-full bg-cyan-400 flex items-center justify-center text-slate-950 text-xs">
+                +
+              </span>
+              New Engagement
+            </button>
+            <div class="pt-4 border-t border-slate-800">
+              <p class="text-xs uppercase tracking-wide text-slate-500 mb-1.5">Status</p>
+              <p class="text-xs text-slate-300">
+                <span id="status-text" class="font-semibold text-cyan-300">Idle</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-slate-800 text-[11px] text-slate-500">
+          <p>Docs path: <span class="text-slate-300 font-mono">./docs</span></p>
+          <p>Outputs: <span class="text-slate-300 font-mono">./output</span></p>
+          <p class="mt-1 text-slate-600">
+            &copy; 2026 Daniel Lee Barren. All rights reserved.
+          </p>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 flex flex-col">
+        <!-- Top bar -->
+        <header class="border-b border-slate-800 px-8 py-4 flex items-center justify-between">
+          <div>
+            <h1 class="text-lg font-semibold tracking-tight text-slate-50">
+              Engagement Workspace
+            </h1>
+            <p class="text-xs text-slate-400">
+              Desktop experience only · Paste goals, drop docs, run the agent team.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              id="clear-all"
+              class="text-xs rounded-full border border-slate-700 px-3 py-1.5 text-slate-300 hover:bg-slate-800 transition-colors"
+            >
+              Clear All
+            </button>
+            <button
+              id="stop-button"
+              class="text-xs rounded-full border border-rose-500/70 px-3 py-1.5 text-rose-300 hover:bg-rose-500/10 transition-colors"
+            >
+              Stop Crew
+            </button>
+            <button
+              id="run-button"
+              class="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-4 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-cyan-500/30 hover:bg-cyan-300 transition-all"
+            >
+              <span id="run-spinner" class="hidden h-3 w-3 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
+              Run Agent Team
+            </button>
+          </div>
+        </header>
+
+        <!-- Content area -->
+        <div class="flex-1 grid grid-cols-[minmax(0,1.4fr)_minmax(0,1.4fr)_minmax(0,1fr)] gap-6 px-8 py-6">
+          <!-- Left: Prompt -->
+          <section class="panel h-full flex flex-col">
+            <h2 class="panel-title">Consulting Goal</h2>
+            <p class="panel-subtitle">
+              Describe the engagement in natural language. Include industry, client type, and desired outcomes.
+            </p>
+            <form id="run-form" class="mt-3 flex-1 flex flex-col">
+              <textarea
+                name="description"
+                id="description"
+                rows="10"
+                class="textarea flex-1"
+                placeholder="Examples:
+- 'Conduct market research and competitor analysis for a B2B SaaS in the HR tech space targeting mid-market companies.'
+- 'Evaluate the viability of launching a premium maintenance plan for a regional HVAC company and design pricing tiers.'
+- 'Design a technical and commercial rollout plan for a new data analytics portal for enterprise customers.'"
+              ></textarea>
+            </form>
+          </section>
+
+          <!-- Center: Upload -->
+          <section class="panel h-full flex flex-col">
+            <h2 class="panel-title">Client Materials</h2>
+            <p class="panel-subtitle">
+              Drop any briefs, requirements, exports, or notes. Files are saved into
+              <span class="font-mono text-cyan-300">./docs</span>.
+            </p>
+            <div id="drop-zone" class="dropzone mt-4">
+              <div class="flex flex-col items-center justify-center pointer-events-none">
+                <div
+                  class="h-10 w-10 rounded-2xl bg-cyan-400/10 border border-cyan-400/40 flex items-center justify-center mb-3"
+                >
+                  <span class="text-cyan-300 text-xl">⬆</span>
+                </div>
+                <p class="text-sm text-slate-100 font-medium">
+                  Drop files here or click to upload
+                </p>
+                <p class="text-xs text-slate-400 mt-1">
+                  Markdown, text, and exported notes are ideal. Everything stays local.
+                </p>
+              </div>
+              <input id="file-input" type="file" multiple />
+            </div>
+            <div class="mt-3">
+              <p class="text-xs uppercase tracking-wide text-slate-500 mb-1.5">
+                Uploaded Files
+              </p>
+              <ul id="file-list" class="space-y-1 text-xs text-slate-200 max-h-40 overflow-auto"></ul>
+            </div>
+          </section>
+
+          <!-- Right: Results -->
+          <section class="panel h-full flex flex-col">
+            <h2 class="panel-title">Live Results</h2>
+            <p class="panel-subtitle">
+              Real-time signals from the agent team and a concise summary once complete.
+            </p>
+            <div
+              id="status-box"
+              class="mt-3 bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 flex-1 flex flex-col"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <p class="font-semibold text-[11px] text-slate-300">Progress Feed</p>
+                <span
+                  id="status-pill"
+                  class="inline-flex items-center rounded-full border border-slate-600 px-2 py-0.5 text-[10px] text-slate-300"
+                >
+                  Idle
+                </span>
+              </div>
+              <div
+                id="progress-feed"
+                class="flex-1 overflow-auto font-mono text-[11px] whitespace-pre-wrap leading-relaxed text-slate-300"
+              ></div>
+            </div>
+
+            <div class="mt-4 space-y-2">
+              <p class="text-xs uppercase tracking-wide text-slate-500">
+                Summary & Downloads
+              </p>
+              <div
+                id="summary"
+                class="min-h-[80px] bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200"
+              >
+                <p class="text-slate-400">
+                  Once the run completes, a concise engagement summary will appear here.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <button
+                  id="download-md"
+                  class="flex-1 min-w-[140px] text-[11px] rounded-full border border-slate-700 px-3 py-1.5 text-slate-300 hover:bg-slate-800 transition-colors"
+                >
+                  Download Markdown
+                </button>
+                <button
+                  id="download-html"
+                  class="flex-1 min-w-[140px] text-[11px] rounded-full border border-slate-600 px-3 py-1.5 text-slate-300 hover:bg-slate-800 transition-colors"
+                >
+                  Download HTML Report
+                </button>
+                <button
+                  id="download-pdf"
+                  class="flex-1 min-w-[140px] text-[11px] rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-950 font-semibold shadow-md shadow-cyan-500/40 hover:brightness-110 transition"
+                >
+                  Download PDF Report
+                </button>
+              </div>
+              <ul id="output-files" class="mt-2 text-[11px] text-slate-300 space-y-1">
+                {% for name in output_files %}
+                <li>
+                  <a href="{{ url_for('download_file', filename=name) }}" target="_blank" class="hover:text-cyan-300">
+                    {{ name }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+  </html>
+
